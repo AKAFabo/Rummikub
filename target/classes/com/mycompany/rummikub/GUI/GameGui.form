@@ -46,14 +46,14 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="PlayerTilesPannel" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="PlayerIconPanels" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="GameplayPanel" min="-2" pref="852" max="-2" attributes="0"/>
+                      <Component id="GameplayPanel" min="-2" pref="936" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="PlayerTilesPannel" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jButton1" max="32767" attributes="0"/>
@@ -61,26 +61,29 @@
                   </Group>
                   <Component id="GameButtonsPanel" max="32767" attributes="0"/>
                   <Component id="GamechatPanel" max="32767" attributes="0"/>
+                  <Component id="addPlayerButton" alignment="0" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="GamechatPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="GameButtonsPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButton1" pref="78" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="PlayerIconPanels" max="32767" attributes="0"/>
-                  <Component id="GameplayPanel" alignment="1" max="32767" attributes="0"/>
+                  <Component id="PlayerIconPanels" alignment="0" max="32767" attributes="0"/>
+                  <Component id="GameplayPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jButton1" max="32767" attributes="0"/>
                   <Component id="PlayerTilesPannel" max="32767" attributes="0"/>
+                  <Component id="addPlayerButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -113,15 +116,15 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                   <Component id="Player1Icon" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                   <Component id="Player2Icon" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                  <Component id="Player3Icon" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                  <Component id="Player4Icon" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Component id="Player3Icon" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
+                  <Component id="Player4Icon" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -184,12 +187,12 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="242" max="32767" attributes="0"/>
-                      <Component id="jTextField1" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="224" max="32767" attributes="0"/>
+                      <Component id="messageTextField" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="sendMessageButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -206,9 +209,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="180" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                  <Component id="messageTextField" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                  <Component id="sendMessageButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="17" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -227,7 +230,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="chatBox">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
@@ -239,17 +242,17 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="messageTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="messageTextFieldActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="sendMessageButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Enviar mensaje"/>
+            <Property name="text" type="java.lang.String" value="Send Message"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendMessageButtonActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -268,63 +271,63 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="Slot13" max="32767" attributes="0"/>
-                      <Component id="Slot1" max="32767" attributes="0"/>
+                      <Component id="Slot13" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot1" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="Slot14" max="32767" attributes="0"/>
-                      <Component id="Slot2" max="32767" attributes="0"/>
+                      <Component id="Slot14" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot2" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="Slot15" max="32767" attributes="0"/>
-                      <Component id="Slot3" max="32767" attributes="0"/>
+                      <Component id="Slot15" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot3" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="Slot16" max="32767" attributes="0"/>
-                      <Component id="Slot4" max="32767" attributes="0"/>
+                      <Component id="Slot16" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot4" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="Slot17" max="32767" attributes="0"/>
-                      <Component id="Slot5" max="32767" attributes="0"/>
+                      <Component id="Slot17" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot5" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="Slot18" max="32767" attributes="0"/>
-                      <Component id="Slot6" max="32767" attributes="0"/>
+                      <Component id="Slot18" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot6" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Slot19" max="32767" attributes="0"/>
-                      <Component id="Slot7" alignment="1" max="32767" attributes="0"/>
+                      <Component id="Slot19" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot7" alignment="1" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Slot20" max="32767" attributes="0"/>
-                      <Component id="Slot8" alignment="0" max="32767" attributes="0"/>
+                      <Component id="Slot20" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot8" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Slot21" max="32767" attributes="0"/>
+                      <Component id="Slot21" min="-2" pref="72" max="-2" attributes="0"/>
                       <Component id="Slot9" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Slot10" max="32767" attributes="0"/>
-                      <Component id="Slot22" max="32767" attributes="0"/>
+                      <Component id="Slot10" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot22" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Slot11" max="32767" attributes="0"/>
-                      <Component id="Slot23" max="32767" attributes="0"/>
+                      <Component id="Slot11" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot23" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Slot12" max="32767" attributes="0"/>
-                      <Component id="Slot24" max="32767" attributes="0"/>
+                      <Component id="Slot12" min="-2" pref="72" max="-2" attributes="0"/>
+                      <Component id="Slot24" min="-2" pref="72" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -336,22 +339,22 @@
                   <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="Slot4" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="Slot1" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                          <Component id="Slot1" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot2" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot12" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot5" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot6" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot7" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot8" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot9" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot10" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot11" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot4" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
+                          <Component id="Slot8" alignment="1" min="-2" pref="103" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="Slot3" max="32767" attributes="0"/>
+                      <Component id="Slot3" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="Slot13" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                       <Component id="Slot14" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
@@ -375,128 +378,58 @@
         <Component class="javax.swing.JSeparator" name="jSeparator1">
         </Component>
         <Component class="javax.swing.JButton" name="Slot1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot  1"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot4">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 4"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 2"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot12">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 12"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 3"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot5">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 5"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot6">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 6"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot7">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 7"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot8">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 8"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot9">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 9"/>
-          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Slot9ActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Slot10">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 10"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot11">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 11"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot24">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 24"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot13">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 13"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot14">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 14"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot15">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 15"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot17">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 17"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot16">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 16"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot18">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 18"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot19">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 19"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot20">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 20"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot21">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 21"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot22">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 22"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="Slot23">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Slot 23"/>
-          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -552,6 +485,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Start Game!"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="addPlayerButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add player"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPlayerButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
