@@ -46,7 +46,14 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="PlayerTilesPannel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="PlayerTilesPannel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="selectedTileLabel" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="PlayerIconPanels" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -55,13 +62,17 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jButton1" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
                   <Component id="GameButtonsPanel" max="32767" attributes="0"/>
                   <Component id="GamechatPanel" max="32767" attributes="0"/>
-                  <Component id="addPlayerButton" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="startGameButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="addPlayerButton" alignment="1" max="32767" attributes="0"/>
+                          <Component id="nextPlayerButton" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
       </Group>
@@ -75,15 +86,27 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="GameButtonsPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" pref="78" max="32767" attributes="0"/>
+                      <Component id="startGameButton" pref="78" max="32767" attributes="0"/>
                   </Group>
                   <Component id="PlayerIconPanels" alignment="0" max="32767" attributes="0"/>
                   <Component id="GameplayPanel" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="PlayerTilesPannel" max="32767" attributes="0"/>
-                  <Component id="addPlayerButton" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="selectedTileLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="addPlayerButton" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="nextPlayerButton" min="-2" pref="71" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -340,17 +363,19 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="Slot4" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="Slot1" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot2" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot12" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot5" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot6" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot7" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot9" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot10" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
-                          <Component id="Slot11" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="Slot8" alignment="1" min="-2" pref="103" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="Slot2" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot12" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot5" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot6" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot7" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot9" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot10" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                              <Component id="Slot11" alignment="3" min="-2" pref="103" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Component id="Slot3" alignment="0" min="-2" pref="103" max="-2" attributes="0"/>
                   </Group>
@@ -481,10 +506,13 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="startGameButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Start Game!"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startGameButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addPlayerButton">
       <Properties>
@@ -492,6 +520,24 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPlayerButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Selected tile: "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="selectedTileLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="No selected tile"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="nextPlayerButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Next Player"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextPlayerButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

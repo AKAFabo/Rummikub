@@ -1,9 +1,13 @@
 com\mycompany\rummikub\GUI\GameGui$2.class
-com\mycompany\rummikub\GUI\GameGui$6.class
-com\mycompany\rummikub\GUI\GameGui$4.class
+com\mycompany\rummikub\GUI\GameGui$8.class
+com\mycompany\rummikub\GUI\GameGui$10.class
+com\mycompany\rummikub\GUI\GameGui$9.class
 com\mycompany\rummikub\Server\GameServer.class
 com\mycompany\rummikub\Rummikub.class
 com\mycompany\rummikub\GUI\GameGui$1.class
+com\mycompany\rummikub\GUI\GameGui$6.class
+com\mycompany\rummikub\GUI\GameGui$4.class
+com\mycompany\rummikub\GUI\GameGui$7.class
 com\mycompany\rummikub\GUI\GameGui$3.class
 com\mycompany\rummikub\GUI\GameGui.class
 com\mycompany\rummikub\Player.class

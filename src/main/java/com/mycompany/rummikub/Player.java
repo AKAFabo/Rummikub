@@ -16,7 +16,29 @@ public class Player {
     private int points = 0;
     private int playerNumber;
     private int tileCounter = 0;
-    private ArrayList<Tile> tiles = new ArrayList<>();
+    private ArrayList<String> maze = new ArrayList<>();
+
+    
+    
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public int getTileCounter() {
+        return tileCounter;
+    }
+
+    public void increaseTileCounter() {
+        this.tileCounter += 1;
+    }
+    
+    public void decreaseTileCounter(){
+        this.tileCounter -= 1;
+    }
 
     public Player(String name, int playerNumber) {
         this.name = name;
@@ -39,12 +61,25 @@ public class Player {
         this.points = points;
     }
 
-    public ArrayList<Tile> getTiles() {
-        return tiles;
+    public String getTile(int i) {
+        return maze.get(i);
+    }
+    
+    public void removeTile(int i){
+        this.maze.remove(i);
     }
 
-    public void setTiles(ArrayList<Tile> tiles) {
-        this.tiles = tiles;
+    public void addTile(String path) {
+        this.maze.add(path);
+    }
+    
+    public String viewTiles(){
+        
+        String tileList = "Cantidad de cartas del jugador: " + this.getName() + "\n\n";
+
+        tileList += this.getTileCounter() + "\n";
+
+        return tileList;
     }
     
 }

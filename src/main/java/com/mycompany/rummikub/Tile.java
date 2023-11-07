@@ -12,6 +12,15 @@ public class Tile {
   
     private int number;
     private String color;
+    private String filePath;
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 
     public int getNumber() {
         return number;
@@ -29,9 +38,10 @@ public class Tile {
         this.color = color;
     }
 
-    public Tile(int number, String color) {
+    public Tile(int number, String color, String filePath) {
         this.number = number;
         this.color = color;
+        this.filePath = filePath;
     }
     
 }

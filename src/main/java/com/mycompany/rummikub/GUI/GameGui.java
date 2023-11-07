@@ -6,7 +6,10 @@ import com.mycompany.rummikub.Tile;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import javax.swing.ImageIcon;
@@ -19,57 +22,8 @@ public class GameGui extends javax.swing.JFrame {
         
         initComponents();
         
-        // Inicializa la lista de nombres de archivos de cartas
-        
-        for (int i = 1; i <= 13; i++) {
-            cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
-            cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
-            availableTiles.add(new Tile(i, "Black"));
-            availableTiles.add(new Tile(i, "Black"));
-            
-            cardFileNames.add("src/resources/tiles/R" + i + "Rummy.png");
-            cardFileNames.add("src/resources/tiles/R" + i + "Rummy.png");
-            availableTiles.add(new Tile(i, "Red"));
-            availableTiles.add(new Tile(i, "Red"));
-   
-            cardFileNames.add("src/resources/tiles/G" + i + "Rummy.png");
-            cardFileNames.add("src/resources/tiles/G" + i + "Rummy.png");
-            availableTiles.add(new Tile(i, "Green"));
-            availableTiles.add(new Tile(i, "Green"));
-            
-            cardFileNames.add("src/resources/tiles/Y" + i + "Rummy.png");
-            cardFileNames.add("src/resources/tiles/Y" + i + "Rummy.png");
-            availableTiles.add(new Tile(i, "Yellow"));
-            availableTiles.add(new Tile(i, "Yellow"));
-        }
-        cardFileNames.add("src/resources/tiles/BJokerRummy.png");
-        cardFileNames.add("src/resources/tiles/RJokerRummy.png");
-        availableTiles.add(new Tile(14, "Black"));
-        availableTiles.add(new Tile(14, "Yellow"));
-        
+        setBoard();
 
-
-        // Mezcla la lista de nombres de archivos para orden aleatorio
-        Collections.shuffle(cardFileNames);
-
-        // Asigna nombres de archivo aleatorios a los botones
-        cardButtons = new javax.swing.JButton[] {Slot1, Slot2, Slot3, Slot4, Slot5, Slot6, Slot7, Slot8, Slot9, Slot10, Slot11, Slot12};
-
-        int availableCards = 106;
-        for (int i = 0; i < cardButtons.length; i++) {
-            Random tile = new Random();
-            int randomIndex = tile.nextInt(availableCards);
-            
-            String fileName = cardFileNames.get(randomIndex);
-            ImageIcon tileImage = new ImageIcon(fileName);
-            cardButtons[i].setIcon(tileImage);      
-            cardButtons[i].setContentAreaFilled(false);
-            availableTiles.remove(randomIndex);
-            availableCards--;
-   
-        }
-        
-        
     }
 
     @SuppressWarnings("unchecked")
@@ -118,8 +72,11 @@ public class GameGui extends javax.swing.JFrame {
         GameButtonsPanel = new javax.swing.JPanel();
         AddTileButton = new javax.swing.JButton();
         PassButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        startGameButton = new javax.swing.JButton();
         addPlayerButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        selectedTileLabel = new javax.swing.JLabel();
+        nextPlayerButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -307,17 +264,18 @@ public class GameGui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PlayerTilesPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Slot4, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(PlayerTilesPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(PlayerTilesPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(Slot1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot12, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot5, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot10, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot11, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Slot8, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Slot8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(PlayerTilesPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Slot2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot12, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot5, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot6, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot9, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot10, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Slot11, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(Slot3, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PlayerTilesPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -368,12 +326,28 @@ public class GameGui extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton1.setText("Start Game!");
+        startGameButton.setText("Start Game!");
+        startGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startGameButtonActionPerformed(evt);
+            }
+        });
 
         addPlayerButton.setText("Add player");
         addPlayerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addPlayerButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Selected tile: ");
+
+        selectedTileLabel.setText("No selected tile");
+
+        nextPlayerButton.setText("Next Player");
+        nextPlayerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextPlayerButtonActionPerformed(evt);
             }
         });
 
@@ -383,19 +357,27 @@ public class GameGui extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PlayerTilesPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PlayerTilesPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(selectedTileLabel)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PlayerIconPanels, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(GameplayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
                     .addComponent(GameButtonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(GamechatPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addPlayerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(startGameButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addPlayerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nextPlayerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,36 +388,24 @@ public class GameGui extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(GameButtonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
+                        .addComponent(startGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
                     .addComponent(PlayerIconPanels, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(GameplayPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(PlayerTilesPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addPlayerButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selectedTileLabel))
+                            .addComponent(addPlayerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nextPlayerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-
-        // Configuración del GameplayPanel
-        GameplayPanel.setBackground(new java.awt.Color(102, 0, 0));
-
-        GridLayout gridLayout = new GridLayout(numRows, numCols);
-        GameplayPanel.setLayout(gridLayout);
-        // Rellenar la matriz de botones
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                tiles[i][j] = new JButton();
-                tiles[i][j].setBackground(new java.awt.Color(102, 0, 0));
-                // Establecer el tamaño de los botones (72x103)
-                tiles[i][j].setPreferredSize(new Dimension(0, 0));
-                GameplayPanel.add(tiles[i][j]);
-        }
-    }
-
-    // Agregar la separación entre las filas y columnas
-    int verticalGap = 5;   // Puedes ajustar este valor según tus preferencias
-    gridLayout.setVgap(verticalGap);
-
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -455,7 +425,7 @@ public class GameGui extends javax.swing.JFrame {
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
         
         String message = messageTextField.getText();     
-        chatBox.append(player1.getName() + ": " + message + "\n");       
+        chatBox.append(playersInGame.get(currentPlayer).getName() + ": " + message + "\n");       
         messageTextField.setText("");
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
@@ -463,6 +433,24 @@ public class GameGui extends javax.swing.JFrame {
         registerPlayer();
         
     }//GEN-LAST:event_addPlayerButtonActionPerformed
+
+    private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
+        if (playerCount <= 1){ 
+            JOptionPane.showMessageDialog(null, "Jugadores insuficientes, " + playerCount + " jugadores registrados", "Rummikub", JOptionPane.INFORMATION_MESSAGE);  
+        }
+        else {
+            startGame();
+        }
+        
+    }//GEN-LAST:event_startGameButtonActionPerformed
+
+    private void nextPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPlayerButtonActionPerformed
+        // TODO add your handling code here:
+        
+            currentPlayer = (currentPlayer + 1) % playersInGame.size();
+            showMaze(currentPlayer);
+        
+    }//GEN-LAST:event_nextPlayerButtonActionPerformed
     
     public void registerPlayer() {
         if (playerCount < 4) {
@@ -491,17 +479,143 @@ public class GameGui extends javax.swing.JFrame {
                         player4 = new Player(playerName, 4);
                         Player4Icon.setText(playerName);
                         playersInGame.add(player4);
-                        break;
-
-                  
-                }
-                
-                
+                        break;                
+                }              
             } else {
                 System.out.println("Nombre de jugador no válido.");
             }
         }
     }
+    
+    public void setBoard(){
+        // Configuración del GameplayPanel
+        GameplayPanel.setBackground(new java.awt.Color(102, 0, 0));
+
+        GridLayout gridLayout = new GridLayout(numRows, numCols);
+        GameplayPanel.setLayout(gridLayout);
+        // Rellenar la matriz de botones
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                tiles[i][j] = new JButton();
+                tiles[i][j].setBackground(new java.awt.Color(102, 0, 0));
+                // Establecer el tamaño de los botones (72x103)
+                tiles[i][j].setPreferredSize(new Dimension(0, 0));
+                GameplayPanel.add(tiles[i][j]);
+        }
+    }
+
+    int verticalGap = 5;   // Puedes ajustar este valor según tus preferencias
+    gridLayout.setVgap(verticalGap);
+    
+   for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numCols; j++) {
+            final int row = i;
+            final int col = j;
+            tiles[i][j].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //if (selectedIcon != null) {
+                        tiles[row][col].setIcon(selectedIcon);
+
+
+                        selectedIcon = null;  // Limpia el icono seleccionado
+                        selectedTileLabel.setText("No tile selected");
+                        selectedTileLabel.setIcon(null);
+                    //}
+                }
+            });
+        }
+    }
+    }
+    
+    public void startGame(){
+  
+        
+        for (int i = 1; i <= 13; i++) {
+            cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
+            cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
+            availableTiles.add(new Tile(i, "Black", "src/resources/tiles/B" + i + "Rummy.png"));
+            availableTiles.add(new Tile(i, "Black", "src/resources/tiles/B" + i + "Rummy.png"));
+            
+            cardFileNames.add("src/resources/tiles/R" + i + "Rummy.png");
+            cardFileNames.add("src/resources/tiles/R" + i + "Rummy.png");
+            availableTiles.add(new Tile(i, "Red", "src/resources/tiles/R" + i + "Rummy.png"));
+            availableTiles.add(new Tile(i, "Red", "src/resources/tiles/R" + i + "Rummy.png"));
+   
+            cardFileNames.add("src/resources/tiles/G" + i + "Rummy.png");
+            cardFileNames.add("src/resources/tiles/G" + i + "Rummy.png");
+            availableTiles.add(new Tile(i, "Green", "src/resources/tiles/G" + i + "Rummy.png"));
+            availableTiles.add(new Tile(i, "Green", "src/resources/tiles/G" + i + "Rummy.png"));
+            
+            cardFileNames.add("src/resources/tiles/Y" + i + "Rummy.png");
+            cardFileNames.add("src/resources/tiles/Y" + i + "Rummy.png");
+            availableTiles.add(new Tile(i, "Yellow", "src/resources/tiles/Y" + i + "Rummy.png"));
+            availableTiles.add(new Tile(i, "Yellow", "src/resources/tiles/Y" + i + "Rummy.png"));
+        }
+        cardFileNames.add("src/resources/tiles/BJokerRummy.png");
+        cardFileNames.add("src/resources/tiles/RJokerRummy.png");
+        availableTiles.add(new Tile(14, "Black", "src/resources/tiles/BJokerRummy.png"));
+        availableTiles.add(new Tile(14, "Yellow", "src/resources/tiles/RJokerRummy.png"));
+        
+        int availableCards = 106;    
+
+        for (Player player : playersInGame){
+                 
+        
+            for (int i = 0; i < 12; i++) {
+                Random tile = new Random();
+                int randomIndex = tile.nextInt(availableCards);
+
+                String fileName = cardFileNames.get(randomIndex);
+                player.addTile(fileName);
+                player.increaseTileCounter();
+                availableTiles.remove(randomIndex);
+                availableCards--;
+               
+            }
+            System.out.println(player.viewTiles());
+            
+            
+        }
+        showMaze(currentPlayer);
+    }
+    
+    public void showMaze(int currentPlayer){
+        Player player = playersInGame.get(currentPlayer);
+        
+         cardButtons = new ArrayList<JButton>(
+                Arrays.asList(
+                    Slot1, Slot2, Slot3, Slot4, Slot5, Slot6, Slot7, Slot8,
+                    Slot9, Slot10, Slot11, Slot12, Slot13, Slot14, Slot15,
+                    Slot16, Slot17, Slot18, Slot19, Slot20, Slot21, Slot22,
+                    Slot23, Slot24
+                )
+            );
+                     
+            for (int i = 0; i < player.getTileCounter(); i++){              
+                final int buttonIndex = i;
+                                           
+                    String fileName = player.getTile(i);              
+                    ImageIcon tileImage = new ImageIcon(fileName);
+                    cardButtons.get(i).setIcon(tileImage);
+                    
+                    cardButtons.get(i).addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        selectedIcon = (ImageIcon) cardButtons.get(buttonIndex).getIcon();
+                        selectedTileLabel.setText(null);
+                        selectedTileLabel.setIcon(selectedIcon);
+                        cardButtons.get(buttonIndex).setIcon(null);
+                        player.decreaseTileCounter();
+                        player.removeTile(buttonIndex);
+                    }
+                });
+            }   
+           
+    }
+    
+    
+    
     
     /**
      * @param args the command line arguments
@@ -543,18 +657,23 @@ public class GameGui extends javax.swing.JFrame {
     private int numRows = 6;
     private int numCols = 14;
     private JButton[][] tiles = new JButton[numRows][numCols];
+    private Tile[][] tilesInBoard = new Tile[numRows][numCols];
 
-    private javax.swing.JButton[] cardButtons;
     private Player player1;
     private Player player2;
     private Player player3;
     private Player player4;
+
+    private int currentPlayer = 0;
     
     private ArrayList<Player> playersInGame = new ArrayList<>();
     ArrayList<String> cardFileNames = new ArrayList<>();
     ArrayList<Tile> availableTiles = new ArrayList<>();
     
     private int playerCount = 0;
+    private ImageIcon selectedIcon;
+    
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddTileButton;
     private javax.swing.JPanel GameButtonsPanel;
@@ -593,12 +712,17 @@ public class GameGui extends javax.swing.JFrame {
     private javax.swing.JButton Slot9;
     private javax.swing.JButton addPlayerButton;
     private javax.swing.JTextArea chatBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField messageTextField;
+    private javax.swing.JButton nextPlayerButton;
+    private javax.swing.JLabel selectedTileLabel;
     private javax.swing.JButton sendMessageButton;
+    private javax.swing.JButton startGameButton;
     // End of variables declaration//GEN-END:variables
+    private ArrayList<JButton> cardButtons;
+
 }
