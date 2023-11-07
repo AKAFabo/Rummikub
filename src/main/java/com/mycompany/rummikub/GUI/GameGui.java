@@ -418,15 +418,9 @@ public class GameGui extends javax.swing.JFrame {
 
         // Configuración del GameplayPanel
         GameplayPanel.setBackground(new java.awt.Color(102, 0, 0));
-        // Definir el layout del GameplayPanel como un GridLayout
-        int numRows = 6;
-        int numCols = 14;
+
         GridLayout gridLayout = new GridLayout(numRows, numCols);
         GameplayPanel.setLayout(gridLayout);
-
-        // Crear un array de botones para representar las fichas
-        JButton[][] tiles = new JButton[numRows][numCols];
-
         // Rellenar la matriz de botones
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
@@ -545,6 +539,11 @@ public class GameGui extends javax.swing.JFrame {
     }
 
     // Extra Variables
+
+    private int numRows = 6;
+    private int numCols = 14;
+    private JButton[][] tiles = new JButton[numRows][numCols];
+
     private javax.swing.JButton[] cardButtons;
     private Player player1;
     private Player player2;
