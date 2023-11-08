@@ -8,17 +8,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,8 +20,7 @@ import javax.swing.JOptionPane;
 
 public class Client extends javax.swing.JFrame {
 
-    public Client() {
-        
+    public Client() {        
         initComponents();
         
         try {
@@ -42,7 +35,6 @@ public class Client extends javax.swing.JFrame {
         
         setBoard();
         fillButtonsArray();
-
     }
 
     @SuppressWarnings("unchecked")
@@ -430,7 +422,16 @@ public class Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddTileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddTileButtonActionPerformed
-        // TODO add your handling code here:
+      
+        Random tile = new Random();
+        int randomIndex = tile.nextInt(availableCards);
+        String fileName = cardFileNames.get(randomIndex);             
+        playersInGame.get(currentPlayer).addTile(fileName);
+        playersInGame.get(currentPlayer).increaseTileCounter();
+        availableTiles.remove(randomIndex);
+        availableCards--;
+        showMaze(currentPlayer);
+        
     }//GEN-LAST:event_AddTileButtonActionPerformed
 
     private void Slot9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Slot9ActionPerformed
@@ -596,9 +597,7 @@ public class Client extends javax.swing.JFrame {
         cardFileNames.add("src/resources/tiles/RJokerRummy.png");
         availableTiles.add(new Tile(14, "Black", "src/resources/tiles/BJokerRummy.png"));
         availableTiles.add(new Tile(14, "Yellow", "src/resources/tiles/RJokerRummy.png"));
-        
-        int availableCards = 106;    
-
+                  
         for (Player player : playersInGame){
                  
         
@@ -739,6 +738,7 @@ public class Client extends javax.swing.JFrame {
     private Player player4;
 
     private int currentPlayer = 0;
+    int availableCards = 106; 
     
     private ArrayList<Player> playersInGame = new ArrayList<>();
     ArrayList<String> cardFileNames = new ArrayList<>();
