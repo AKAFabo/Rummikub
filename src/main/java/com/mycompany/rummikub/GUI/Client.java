@@ -8,6 +8,14 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,13 +24,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-public class GameGui extends javax.swing.JFrame {
+public class Client extends javax.swing.JFrame {
 
-    public GameGui() {
+    public Client() {
         
         initComponents();
         
+        try {
+            socket = new Socket("localhost", 1234); // Cambia la dirección IP y el puerto según tu configuración
+            din = new DataInputStream(socket.getInputStream());
+            dout = new DataOutputStream(socket.getOutputStream());
+
+            new Thread(new ClientHandler()).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         setBoard();
+        fillButtonsArray();
 
     }
 
@@ -423,12 +442,20 @@ public class GameGui extends javax.swing.JFrame {
     }//GEN-LAST:event_messageTextFieldActionPerformed
 
     private void sendMessageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendMessageButtonActionPerformed
-        
-        String message = messageTextField.getText();     
-        chatBox.append(playersInGame.get(currentPlayer).getName() + ": " + message + "\n");       
+        String message = messageTextField.getText();
+        sendMessage(message);
         messageTextField.setText("");
     }//GEN-LAST:event_sendMessageButtonActionPerformed
 
+    private void sendMessage(String message) {
+        try {
+            dout.writeUTF(message); // Envía el mensaje al servidor
+            dout.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void addPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPlayerButtonActionPerformed
         registerPlayer();
         
@@ -451,7 +478,7 @@ public class GameGui extends javax.swing.JFrame {
             showMaze(currentPlayer);
         
     }//GEN-LAST:event_nextPlayerButtonActionPerformed
-    
+     
     public void registerPlayer() {
         if (playerCount < 4) {
             String playerName = JOptionPane.showInputDialog("Ingresa el nombre del jugador:");
@@ -498,7 +525,6 @@ public class GameGui extends javax.swing.JFrame {
             for (int j = 0; j < numCols; j++) {
                 tiles[i][j] = new JButton();
                 tiles[i][j].setBackground(new java.awt.Color(102, 0, 0));
-                // Establecer el tamaño de los botones (72x103)
                 tiles[i][j].setPreferredSize(new Dimension(0, 0));
                 GameplayPanel.add(tiles[i][j]);
         }
@@ -507,25 +533,39 @@ public class GameGui extends javax.swing.JFrame {
     int verticalGap = 5;   // Puedes ajustar este valor según tus preferencias
     gridLayout.setVgap(verticalGap);
     
-   for (int i = 0; i < numRows; i++) {
+    for (int i = 0; i < numRows; i++) {
         for (int j = 0; j < numCols; j++) {
             final int row = i;
             final int col = j;
             tiles[i][j].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //if (selectedIcon != null) {
-                        tiles[row][col].setIcon(selectedIcon);
 
+                        tiles[row][col].setIcon(selectedIcon);
 
                         selectedIcon = null;  // Limpia el icono seleccionado
                         selectedTileLabel.setText("No tile selected");
                         selectedTileLabel.setIcon(null);
-                    //}
-                }
-            });
+                        cardButtons.get(tileIndex).setIcon(null);   
+                        
+                        int mazeSize = playersInGame.get(currentPlayer).getMaze().size();
+                        for (int i = 0; i < mazeSize; i++) {
+                            String path = playersInGame.get(currentPlayer).getMaze().get(i);
+                            if (selectedPath.equalsIgnoreCase(path)) {
+                                playersInGame.get(currentPlayer).removeTile(i);
+                                System.out.println(playersInGame.get(currentPlayer).getPaths());
+                                break;
+                            }
+                        }
+                        
+                        
+                        System.out.println(playersInGame.get(currentPlayer).viewTiles());
+                        playersInGame.get(currentPlayer).decreaseTileCounter();
+
+                    }
+                }); 
+            }
         }
-    }
     }
     
     public void startGame(){
@@ -573,50 +613,69 @@ public class GameGui extends javax.swing.JFrame {
                 availableCards--;
                
             }
-            System.out.println(player.viewTiles());
+            System.out.println(player.getMaze().size());
+            System.out.println(player.getPaths());
             
             
         }
         showMaze(currentPlayer);
     }
     
-    public void showMaze(int currentPlayer){
+    public void showMaze(int currentPlayer) {
         Player player = playersInGame.get(currentPlayer);
         
-         cardButtons = new ArrayList<JButton>(
-                Arrays.asList(
-                    Slot1, Slot2, Slot3, Slot4, Slot5, Slot6, Slot7, Slot8,
-                    Slot9, Slot10, Slot11, Slot12, Slot13, Slot14, Slot15,
-                    Slot16, Slot17, Slot18, Slot19, Slot20, Slot21, Slot22,
-                    Slot23, Slot24
-                )
-            );
-                     
-            for (int i = 0; i < player.getTileCounter(); i++){              
-                final int buttonIndex = i;
-                                           
-                    String fileName = player.getTile(i);              
-                    ImageIcon tileImage = new ImageIcon(fileName);
-                    cardButtons.get(i).setIcon(tileImage);
+        for (int j = 0; j < cardButtons.size(); j++){
+            cardButtons.get(j).setIcon(null);
+        }
+        
+        System.out.println(player.getMaze().size());
+        for (int i = 0; i < player.getMaze().size(); i++) {
+            final int buttonIndex = i;
+
+            String fileName = player.getTile(i);
+            ImageIcon tileImage = new ImageIcon(fileName);
+            cardButtons.get(i).setIcon(tileImage);
+
+            cardButtons.get(i).addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    selectedIcon = (ImageIcon) cardButtons.get(buttonIndex).getIcon();
+                    selectedPath = (selectedIcon.getDescription());
+                    selectedTileLabel.setText(null);
+                    selectedTileLabel.setIcon(selectedIcon);
+                    tileIndex = buttonIndex;
                     
-                    cardButtons.get(i).addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        selectedIcon = (ImageIcon) cardButtons.get(buttonIndex).getIcon();
-                        selectedTileLabel.setText(null);
-                        selectedTileLabel.setIcon(selectedIcon);
-                        cardButtons.get(buttonIndex).setIcon(null);
-                        player.decreaseTileCounter();
-                        player.removeTile(buttonIndex);
-                    }
-                });
-            }   
-           
+                }
+            });
+        }
     }
-    
-    
-    
-    
+   
+    public void fillButtonsArray(){
+        cardButtons.add(Slot1);
+        cardButtons.add(Slot2);
+        cardButtons.add(Slot3);
+        cardButtons.add(Slot4);
+        cardButtons.add(Slot5);
+        cardButtons.add(Slot6);
+        cardButtons.add(Slot7);
+        cardButtons.add(Slot8);
+        cardButtons.add(Slot9);
+        cardButtons.add(Slot10);
+        cardButtons.add(Slot11);
+        cardButtons.add(Slot12);
+        cardButtons.add(Slot13);
+        cardButtons.add(Slot14);
+        cardButtons.add(Slot15);
+        cardButtons.add(Slot16);
+        cardButtons.add(Slot17);
+        cardButtons.add(Slot18);
+        cardButtons.add(Slot19);
+        cardButtons.add(Slot20);
+        cardButtons.add(Slot21);
+        cardButtons.add(Slot22);
+        cardButtons.add(Slot23);
+        cardButtons.add(Slot24);
+    }
     /**
      * @param args the command line arguments
      */
@@ -634,24 +693,39 @@ public class GameGui extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GameGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GameGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GameGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GameGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Client.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Client().setVisible(true);
+                }
+             });
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GameGui().setVisible(true);
+        }
+    
+    private class ClientHandler implements Runnable {
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    String message = din.readUTF();
+                    chatBox.append(message + "\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
     }
-
     // Extra Variables
 
     private int numRows = 6;
@@ -672,6 +746,12 @@ public class GameGui extends javax.swing.JFrame {
     
     private int playerCount = 0;
     private ImageIcon selectedIcon;
+    private String selectedPath;
+    private int tileIndex;
+    
+    private Socket socket;
+    private DataInputStream din;
+    private DataOutputStream dout;
     
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -723,6 +803,5 @@ public class GameGui extends javax.swing.JFrame {
     private javax.swing.JButton sendMessageButton;
     private javax.swing.JButton startGameButton;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<JButton> cardButtons;
-
+    private ArrayList<JButton> cardButtons = new ArrayList<>();
 }

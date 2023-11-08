@@ -4,7 +4,7 @@
 
 package com.mycompany.rummikub;
 
-import com.mycompany.rummikub.GUI.GameGui;
+import com.mycompany.rummikub.GUI.Client;
 
 /**
  *
@@ -14,7 +14,7 @@ public class Rummikub {
 
     public static void main(String[] args) {
         
-        GameGui gui = new GameGui();
+        Client gui = new Client();
         gui.setVisible(true);
         
     }
