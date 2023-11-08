@@ -429,6 +429,7 @@ public class Client extends javax.swing.JFrame {
         playersInGame.get(currentPlayer).addTile(fileName);
         playersInGame.get(currentPlayer).increaseTileCounter();
         availableTiles.remove(randomIndex);
+        cardFileNames.remove(randomIndex);
         availableCards--;
         showMaze(currentPlayer);
         
@@ -541,24 +542,26 @@ public class Client extends javax.swing.JFrame {
             tiles[i][j].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                        if (!hasTile[row][col]){
+                            tiles[row][col].setIcon(selectedIcon);
+                            hasTile[row][col] = true;
 
-                        tiles[row][col].setIcon(selectedIcon);
+                            selectedIcon = null;  // Limpia el icono seleccionado
+                            selectedTileLabel.setText("No tile selected");
+                            selectedTileLabel.setIcon(null);
+                            cardButtons.get(tileIndex).setIcon(null);   
 
-                        selectedIcon = null;  // Limpia el icono seleccionado
-                        selectedTileLabel.setText("No tile selected");
-                        selectedTileLabel.setIcon(null);
-                        cardButtons.get(tileIndex).setIcon(null);   
-                        
-                        int mazeSize = playersInGame.get(currentPlayer).getMaze().size();
-                        for (int i = 0; i < mazeSize; i++) {
-                            String path = playersInGame.get(currentPlayer).getMaze().get(i);
-                            if (selectedPath.equalsIgnoreCase(path)) {
-                                playersInGame.get(currentPlayer).removeTile(i);
-                                System.out.println(playersInGame.get(currentPlayer).getPaths());
-                                break;
+                            int mazeSize = playersInGame.get(currentPlayer).getMaze().size();
+                                              
+                            for (int i = 0; i < mazeSize; i++) {
+                                String path = playersInGame.get(currentPlayer).getMaze().get(i);
+                                if (selectedPath.equalsIgnoreCase(path)) {
+                                    playersInGame.get(currentPlayer).removeTile(i);
+                                    System.out.println(playersInGame.get(currentPlayer).getPaths());
+                                    break;
+                                }
                             }
                         }
-                        
                         
                         System.out.println(playersInGame.get(currentPlayer).viewTiles());
                         playersInGame.get(currentPlayer).decreaseTileCounter();
@@ -609,6 +612,7 @@ public class Client extends javax.swing.JFrame {
                 player.addTile(fileName);
                 player.increaseTileCounter();
                 availableTiles.remove(randomIndex);
+                cardFileNames.remove(randomIndex);
                 availableCards--;
                
             }
@@ -649,7 +653,7 @@ public class Client extends javax.swing.JFrame {
         }
     }
    
-    public void fillButtonsArray(){
+    public void fillButtonsArray(){ //Horrible method but idc
         cardButtons.add(Slot1);
         cardButtons.add(Slot2);
         cardButtons.add(Slot3);
@@ -731,6 +735,7 @@ public class Client extends javax.swing.JFrame {
     private int numCols = 14;
     private JButton[][] tiles = new JButton[numRows][numCols];
     private Tile[][] tilesInBoard = new Tile[numRows][numCols];
+    private boolean[][] hasTile = new boolean[numRows][numCols];
 
     private Player player1;
     private Player player2;
