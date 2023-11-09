@@ -3,7 +3,7 @@ package com.mycompany.rummikub.GUI;
 
 import com.mycompany.rummikub.Player;
 import com.mycompany.rummikub.Tile;
-
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 public class Client extends javax.swing.JFrame {
 
     public Client() {        
-        initComponents();
+        initComponents();       
         
         try {
             socket = new Socket("localhost", 1234); // Cambia la dirección IP y el puerto según tu configuración
@@ -476,6 +476,12 @@ public class Client extends javax.swing.JFrame {
     private void nextPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPlayerButtonActionPerformed
         // TODO add your handling code here:
         
+            switch (currentPlayer){
+            case 0 -> Player1Icon.setForeground(Color.black);
+            case 1 -> Player2Icon.setForeground(Color.black);
+            case 2 -> Player3Icon.setForeground(Color.black);
+            case 3 -> Player4Icon.setForeground(Color.black);
+        }
             currentPlayer = (currentPlayer + 1) % playersInGame.size();
             showMaze(currentPlayer);
         
@@ -563,6 +569,13 @@ public class Client extends javax.swing.JFrame {
                             }
                         }
                         
+                        else {
+                            selectedIcon = (ImageIcon) tiles[row][col].getIcon();
+                            tiles[row][col].setIcon(null);
+                            hasTile[row][col] = false;
+                            selectedTileLabel.setIcon(selectedIcon);
+                        }
+                        
                         System.out.println(playersInGame.get(currentPlayer).viewTiles());
                         playersInGame.get(currentPlayer).decreaseTileCounter();
 
@@ -574,6 +587,7 @@ public class Client extends javax.swing.JFrame {
     
     public void startGame(){
   
+        setCurrentPlayerLabel();
         
         for (int i = 1; i <= 13; i++) {
             cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
@@ -626,6 +640,7 @@ public class Client extends javax.swing.JFrame {
     
     public void showMaze(int currentPlayer) {
         Player player = playersInGame.get(currentPlayer);
+        setCurrentPlayerLabel();
         
         for (int j = 0; j < cardButtons.size(); j++){
             cardButtons.get(j).setIcon(null);
@@ -678,6 +693,16 @@ public class Client extends javax.swing.JFrame {
         cardButtons.add(Slot22);
         cardButtons.add(Slot23);
         cardButtons.add(Slot24);
+    }
+    
+    public void setCurrentPlayerLabel(){
+        
+        switch (currentPlayer){
+            case 0 -> Player1Icon.setForeground(Color.yellow);
+            case 1 -> Player2Icon.setForeground(Color.yellow);
+            case 2 -> Player3Icon.setForeground(Color.yellow);
+            case 3 -> Player4Icon.setForeground(Color.yellow);
+        }
     }
     /**
      * @param args the command line arguments
