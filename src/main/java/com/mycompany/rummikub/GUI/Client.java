@@ -1,4 +1,3 @@
-
 package com.mycompany.rummikub.GUI;
 
 import com.mycompany.rummikub.Player;
@@ -428,7 +427,6 @@ public class Client extends javax.swing.JFrame {
         String fileName = cardFileNames.get(randomIndex);             
         playersInGame.get(currentPlayer).addTile(fileName);
         playersInGame.get(currentPlayer).increaseTileCounter();
-        availableTiles.remove(randomIndex);
         cardFileNames.remove(randomIndex);
         availableCards--;
         showMaze(currentPlayer);
@@ -476,50 +474,63 @@ public class Client extends javax.swing.JFrame {
     private void nextPlayerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextPlayerButtonActionPerformed
         // TODO add your handling code here:
         
+        if (verifyBoard()){
             switch (currentPlayer){
-            case 0 -> Player1Icon.setForeground(Color.black);
-            case 1 -> Player2Icon.setForeground(Color.black);
-            case 2 -> Player3Icon.setForeground(Color.black);
-            case 3 -> Player4Icon.setForeground(Color.black);
-        }
+                case 0 -> Player1Icon.setForeground(Color.black);
+                case 1 -> Player2Icon.setForeground(Color.black);
+                case 2 -> Player3Icon.setForeground(Color.black);
+                case 3 -> Player4Icon.setForeground(Color.black);
+            }
             currentPlayer = (currentPlayer + 1) % playersInGame.size();
             showMaze(currentPlayer);
-        
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Non valid movements in the board","Rummikub", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_nextPlayerButtonActionPerformed
      
     public void registerPlayer() {
         if (playerCount < 4) {
-            String playerName = JOptionPane.showInputDialog("Ingresa el nombre del jugador:");
+            String playerName = JOptionPane.showInputDialog("Type the name of the player:");
 
             if (playerName != null && !playerName.isEmpty()) {
-                System.out.println("Jugador registrado: " + playerName);
+                System.out.println("Player: " + playerName + " registered");
                 playerCount++;     
                 switch (playerCount) {
-                    case 1:
+                    case 1 -> {
                         player1 = new Player(playerName, 1);
                         Player1Icon.setText(playerName);
                         playersInGame.add(player1);
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         player2 = new Player(playerName, 2);
                         Player2Icon.setText(playerName);
                         playersInGame.add(player2);
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         player3 = new Player(playerName, 3);
                         Player3Icon.setText(playerName);
                         playersInGame.add(player3);
-                        break;
-                    case 4:
+                    }
+                    case 4 -> {
                         player4 = new Player(playerName, 4);
                         Player4Icon.setText(playerName);
                         playersInGame.add(player4);
-                        break;                
+                    }                
                 }              
             } else {
-                System.out.println("Nombre de jugador no válido.");
+                System.out.println("Non valid player");
             }
         }
+    }
+    
+    public Tile getSelectedTile(String path){
+        for (Tile tile : availableTiles){
+            if (tile.getFilePath().equals(path)){
+                return tile;
+            }
+        }
+        return null;
     }
     
     public void setBoard(){
@@ -547,12 +558,14 @@ public class Client extends javax.swing.JFrame {
             final int col = j;
             tiles[i][j].addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                        if (!hasTile[row][col]){
+                public void actionPerformed(ActionEvent e) { //Add hasTile[row][col] && selectedIcon == null statement logic
+                        if (!hasTile[row][col] && selectedIcon != null){
                             tiles[row][col].setIcon(selectedIcon);
                             hasTile[row][col] = true;
+                            tilesInBoard[row][col] = getSelectedTile(selectedPath);
+                            
 
-                            selectedIcon = null;  // Limpia el icono seleccionado
+                            selectedIcon = null;  // Limpia el icono seleccionad
                             selectedTileLabel.setText("No tile selected");
                             selectedTileLabel.setIcon(null);
                             cardButtons.get(tileIndex).setIcon(null);   
@@ -569,11 +582,16 @@ public class Client extends javax.swing.JFrame {
                             }
                         }
                         
+                        else if (hasTile[row][col] && selectedIcon != null){
+                            System.out.println("Deberia de funcionar");
+                        }
+                        
                         else {
                             selectedIcon = (ImageIcon) tiles[row][col].getIcon();
                             tiles[row][col].setIcon(null);
                             hasTile[row][col] = false;
                             selectedTileLabel.setIcon(selectedIcon);
+                            tilesInBoard[row][col] = null;
                         }
                         
                         System.out.println(playersInGame.get(currentPlayer).viewTiles());
@@ -593,21 +611,17 @@ public class Client extends javax.swing.JFrame {
             cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
             cardFileNames.add("src/resources/tiles/B" + i + "Rummy.png");
             availableTiles.add(new Tile(i, "Black", "src/resources/tiles/B" + i + "Rummy.png"));
-            availableTiles.add(new Tile(i, "Black", "src/resources/tiles/B" + i + "Rummy.png"));
             
             cardFileNames.add("src/resources/tiles/R" + i + "Rummy.png");
             cardFileNames.add("src/resources/tiles/R" + i + "Rummy.png");
-            availableTiles.add(new Tile(i, "Red", "src/resources/tiles/R" + i + "Rummy.png"));
             availableTiles.add(new Tile(i, "Red", "src/resources/tiles/R" + i + "Rummy.png"));
    
             cardFileNames.add("src/resources/tiles/G" + i + "Rummy.png");
             cardFileNames.add("src/resources/tiles/G" + i + "Rummy.png");
             availableTiles.add(new Tile(i, "Green", "src/resources/tiles/G" + i + "Rummy.png"));
-            availableTiles.add(new Tile(i, "Green", "src/resources/tiles/G" + i + "Rummy.png"));
             
             cardFileNames.add("src/resources/tiles/Y" + i + "Rummy.png");
             cardFileNames.add("src/resources/tiles/Y" + i + "Rummy.png");
-            availableTiles.add(new Tile(i, "Yellow", "src/resources/tiles/Y" + i + "Rummy.png"));
             availableTiles.add(new Tile(i, "Yellow", "src/resources/tiles/Y" + i + "Rummy.png"));
         }
         cardFileNames.add("src/resources/tiles/BJokerRummy.png");
@@ -625,7 +639,6 @@ public class Client extends javax.swing.JFrame {
                 String fileName = cardFileNames.get(randomIndex);
                 player.addTile(fileName);
                 player.increaseTileCounter();
-                availableTiles.remove(randomIndex);
                 cardFileNames.remove(randomIndex);
                 availableCards--;
                
@@ -754,7 +767,48 @@ public class Client extends javax.swing.JFrame {
             }
         }
     }
-    // Extra Variables
+    
+    private boolean verifyBoard() {
+        int numRows = hasTile.length;
+        int numCols = hasTile[0].length;
+
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                if (!hasTile[row][col]) {
+                    // Si la posición es falsa, continúa a la siguiente iteración
+                    continue;
+                }
+
+                // Verifica las condiciones
+                if ((col > 0 && hasTile[row][col - 1]) && (col < numCols - 1 && hasTile[row][col + 1])) {
+                    // Columna - 1 y columna + 1 son verdaderas
+                    continue;
+                } else if ((col > 0 && !hasTile[row][col - 1]) && (col < numCols - 1 && !hasTile[row][col + 1])) {
+                    // Columna - 1 y columna + 1 son falsas
+                    return false;
+                } else if (col > 0 && hasTile[row][col - 1] && col < numCols - 2 && !hasTile[row][col + 1]) {
+                    // Columna - 1 es verdadera y columna + 1 es falsa
+                    if (!hasTile[row][col - 2]) {
+                        // La posición de la columna - 2 es falsa
+                        return false;
+                    }
+                    // Columna - 2 es verdadera, continúa a la siguiente iteración
+                    continue;
+                } else if (col < numCols - 1 && hasTile[row][col + 1] && col > 1 && !hasTile[row][col - 1]) {
+                    // Columna + 1 es verdadera y columna - 1 es falsa
+                    if (!hasTile[row][col + 2]) {
+                        // La posición de la columna + 2 es falsa
+                        return false;
+                    }
+                    // Columna + 2 es verdadera, continúa a la siguiente iteración
+                    continue;
+                }
+            }
+        }
+        // Si no se encuentra ninguna condición falsa, retorna true
+        return true;
+    }
+    // Extra Variables this shit got destroyed
 
     private int numRows = 6;
     private int numCols = 14;
