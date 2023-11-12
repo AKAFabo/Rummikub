@@ -314,6 +314,11 @@ public class Client extends javax.swing.JFrame {
         });
 
         PassButton.setText("Pass");
+        PassButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PassButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout GameButtonsPanelLayout = new javax.swing.GroupLayout(GameButtonsPanel);
         GameButtonsPanel.setLayout(GameButtonsPanelLayout);
@@ -475,19 +480,47 @@ public class Client extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if (verifyBoard()){
-            switch (currentPlayer){
-                case 0 -> Player1Icon.setForeground(Color.black);
-                case 1 -> Player2Icon.setForeground(Color.black);
-                case 2 -> Player3Icon.setForeground(Color.black);
-                case 3 -> Player4Icon.setForeground(Color.black);
+            
+            if  (playersInGame.get(currentPlayer).getTileCounter() != 0){
+                switch (currentPlayer){
+                    case 0 -> Player1Icon.setForeground(Color.black);
+                    case 1 -> Player2Icon.setForeground(Color.black);
+                    case 2 -> Player3Icon.setForeground(Color.black);
+                    case 3 -> Player4Icon.setForeground(Color.black);
+                }
+                currentPlayer = (currentPlayer + 1) % playersInGame.size();
+                showMaze(currentPlayer);
+            } else {
+                JOptionPane.showMessageDialog(null, playersInGame.get(currentPlayer) + " has won the game.", "Rummikub", JOptionPane.INFORMATION_MESSAGE);
             }
-            currentPlayer = (currentPlayer + 1) % playersInGame.size();
-            showMaze(currentPlayer);
-        }
-        else{
+ 
+        } else{
             JOptionPane.showMessageDialog(null, "Non valid movements in the board","Rummikub", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_nextPlayerButtonActionPerformed
+
+    private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
+        // TODO add your handling code here:
+        
+        int numRows = hasTile.length;
+        int numCols = hasTile[0].length;
+        
+        String board = "";
+
+        for (int row = 0; row < numRows; row++) {
+            board += "\n";
+            for (int col = 0; col < numCols; col++) {
+                
+                if (hasTile[row][col]){
+                
+                    board += tilesInBoard[row][col].getColor() + tilesInBoard[row][col].getNumber() + ", ";
+                } else {
+                    board += "0, ";
+                }
+            }
+        }
+        System.out.println(board);
+    }//GEN-LAST:event_PassButtonActionPerformed
      
     public void registerPlayer() {
         if (playerCount < 4) {
@@ -569,6 +602,7 @@ public class Client extends javax.swing.JFrame {
                             selectedTileLabel.setText("No tile selected");
                             selectedTileLabel.setIcon(null);
                             cardButtons.get(tileIndex).setIcon(null);   
+                            playersInGame.get(currentPlayer).decreaseTileCounter();
 
                             int mazeSize = playersInGame.get(currentPlayer).getMaze().size();
                                               
@@ -583,19 +617,21 @@ public class Client extends javax.swing.JFrame {
                         }
                         
                         else if (hasTile[row][col] && selectedIcon != null){
-                            System.out.println("Deberia de funcionar");
+                            System.out.println("No se puede poner aqui");
                         }
                         
                         else {
                             selectedIcon = (ImageIcon) tiles[row][col].getIcon();
+                            selectedPath = (selectedIcon.getDescription());
                             tiles[row][col].setIcon(null);
                             hasTile[row][col] = false;
                             selectedTileLabel.setIcon(selectedIcon);
+                            selectedTileLabel.setText("");
                             tilesInBoard[row][col] = null;
                         }
                         
                         System.out.println(playersInGame.get(currentPlayer).viewTiles());
-                        playersInGame.get(currentPlayer).decreaseTileCounter();
+                        
 
                     }
                 }); 
@@ -670,12 +706,19 @@ public class Client extends javax.swing.JFrame {
             cardButtons.get(i).addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    selectedIcon = (ImageIcon) cardButtons.get(buttonIndex).getIcon();
-                    selectedPath = (selectedIcon.getDescription());
-                    selectedTileLabel.setText(null);
-                    selectedTileLabel.setIcon(selectedIcon);
-                    tileIndex = buttonIndex;
                     
+                    if (cardButtons.get(buttonIndex).getIcon() != null){
+                        selectedIcon = (ImageIcon) cardButtons.get(buttonIndex).getIcon();
+                        selectedPath = (selectedIcon.getDescription());
+                        selectedTileLabel.setText(null);
+                        selectedTileLabel.setIcon(selectedIcon);
+                        tileIndex = buttonIndex;                   
+                    } else {
+                        cardButtons.get(buttonIndex).setIcon(selectedIcon);
+                        selectedIcon = null;
+                        selectedTileLabel.setText("No tile selected");
+                        selectedTileLabel.setIcon(null);
+                    }
                 }
             });
         }
@@ -769,47 +812,115 @@ public class Client extends javax.swing.JFrame {
     }
     
     private boolean verifyBoard() {
-        int numRows = hasTile.length;
-        int numCols = hasTile[0].length;
+        int numRows = 6;
+        int numCols = 14;
 
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 if (!hasTile[row][col]) {
-                    // Si la posición es falsa, continúa a la siguiente iteración
                     continue;
                 }
 
-                // Verifica las condiciones
                 if ((col > 0 && hasTile[row][col - 1]) && (col < numCols - 1 && hasTile[row][col + 1])) {
                     // Columna - 1 y columna + 1 son verdaderas
-                    continue;
+                    if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 1].getColor()) &&
+                            tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 1].getColor())){
+                        
+                        if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() + 1 &&
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1){
+                            continue;
+                        } else {
+                            return false;
+                        }                     
+                    }
+                    else {
+                        if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 1].getNumber() &&
+                            tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 1].getNumber()){
+                            return false;
+                        }
+                    }
+
                 } else if ((col > 0 && !hasTile[row][col - 1]) && (col < numCols - 1 && !hasTile[row][col + 1])) {
                     // Columna - 1 y columna + 1 son falsas
                     return false;
+                  
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 } else if (col > 0 && hasTile[row][col - 1] && col < numCols - 2 && !hasTile[row][col + 1]) {
-                    // Columna - 1 es verdadera y columna + 1 es falsa
-                    if (!hasTile[row][col - 2]) {
-                        // La posición de la columna - 2 es falsa
-                        return false;
+                    // If left is true and right is false
+                    if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 1].getColor())){
+                        if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() + 1){
+                            if (!hasTile[row][col - 2]) {
+                                return false;
+                            } else {
+                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 2].getNumber() + 2){
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 1].getNumber()){
+                            return false;
+                        } else {
+                            if (!hasTile[row][col - 2]) {
+                                return false;
+                            } else {
+                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 2].getNumber()){
+                                    return false;
+                                }
+                            }
+                        }
                     }
-                    // Columna - 2 es verdadera, continúa a la siguiente iteración
-                    continue;
+                     
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 } else if (col < numCols - 1 && hasTile[row][col + 1] && col > 1 && !hasTile[row][col - 1]) {
-                    // Columna + 1 es verdadera y columna - 1 es falsa
-                    if (!hasTile[row][col + 2]) {
-                        // La posición de la columna + 2 es falsa
-                        return false;
+                    // If left is false and right is true
+                    if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 1].getColor())){
+                        if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1){
+                            if (!hasTile[row][col + 2]) {
+                                return false;
+                            } else {
+                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 2].getNumber() - 2){
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 1].getNumber()){
+                            return false;
+                        } else {
+                            if (!hasTile[row][col + 2]) {
+                                return false;
+                            } else {
+                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 2].getNumber()){
+                                    return false;
+                                }
+                            }
+                        }
                     }
-                    // Columna + 2 es verdadera, continúa a la siguiente iteración
-                    continue;
                 }
             }
         }
-        // Si no se encuentra ninguna condición falsa, retorna true
         return true;
     }
     // Extra Variables this shit got destroyed
-
     private int numRows = 6;
     private int numCols = 14;
     private JButton[][] tiles = new JButton[numRows][numCols];

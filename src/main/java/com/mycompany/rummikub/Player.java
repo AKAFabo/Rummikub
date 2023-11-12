@@ -18,6 +18,15 @@ public class Player {
     private int tileCounter = 0;
     private ArrayList<String> maze = new ArrayList<>();
 
+    public int getTileCounter() {
+        return tileCounter;
+    }
+
+    public void setTileCounter(int tileCounter) {
+        this.tileCounter = tileCounter;
+    }
+
+    
     public ArrayList<String> getMaze() {
         return maze;
     }

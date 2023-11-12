@@ -1,11 +1,2 @@
-1. Cambiar que availableTiles nunca pierda informacion. (Listo)
-2. Solo crear una copia por carta en availableTiles. (Listo)
-3. Crear la matriz tileObjectsInMatrix. (Listo)
-4. Llenar esta matriz cada que se coloque una carta, como metodo booleano usar hasTile. (50/100)
-5. Generar la resolucion de la carta como booleano al presionar nextPlayer.(Listo)
-
-
-Para determinar si los movimientos son completos todos los casos serian:
-
-1. Si una ficha no tiene fichas a los 2 lados retornar falsos
-2. Si una ficha tiene 1 ficha al lado y al otro no, verificar que la de al lado tambien tenga ficha (tanto para izquierda y derecha)
+1. Añadir logica para comodines
+2. Añadir logica para ganar la partida (Listo)
