@@ -7,8 +7,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -427,17 +429,36 @@ public class Client extends javax.swing.JFrame {
 
     private void AddTileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddTileButtonActionPerformed
       
-        Random tile = new Random();
-        int randomIndex = tile.nextInt(availableCards);
-        String fileName = cardFileNames.get(randomIndex);             
-        playersInGame.get(currentPlayer).addTile(fileName);
-        playersInGame.get(currentPlayer).increaseTileCounter();
-        cardFileNames.remove(randomIndex);
-        availableCards--;
-        showMaze(currentPlayer);
+        if (playersInGame.get(currentPlayer).getTileCounter() < 24){
         
+            Random tile = new Random();
+            int randomIndex = tile.nextInt(availableCards);
+            String fileName = cardFileNames.get(randomIndex);             
+            playersInGame.get(currentPlayer).addTile(fileName);
+            playersInGame.get(currentPlayer).increaseTileCounter();
+            cardFileNames.remove(randomIndex);
+            availableCards--;
+            showMaze(currentPlayer);
+        } else {
+            JOptionPane.showMessageDialog(null, "Full maze!", "Rummikub", JOptionPane.INFORMATION_MESSAGE);  
+            
+        }    
     }//GEN-LAST:event_AddTileButtonActionPerformed
+    
+    public void generateReport(Player player) {
+        String name = player.getName();
+        int victories = player.getVictoryCount();
 
+        String txtPath = "src/resources/victories.txt";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtPath))) {
+
+            writer.write("Player: " + name + " " + String.valueOf(victories) + " victories");
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void Slot9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Slot9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Slot9ActionPerformed
@@ -480,7 +501,7 @@ public class Client extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         if (verifyBoard()){
-            
+              
             if  (playersInGame.get(currentPlayer).getTileCounter() != 0){
                 switch (currentPlayer){
                     case 0 -> Player1Icon.setForeground(Color.black);
@@ -488,17 +509,27 @@ public class Client extends javax.swing.JFrame {
                     case 2 -> Player3Icon.setForeground(Color.black);
                     case 3 -> Player4Icon.setForeground(Color.black);
                 }
-                currentPlayer = (currentPlayer + 1) % playersInGame.size();
-                showMaze(currentPlayer);
+                    currentPlayer = (currentPlayer + 1) % playersInGame.size();
+                    showMaze(currentPlayer);
+                } else {
+                    JOptionPane.showMessageDialog(null, playersInGame.get(currentPlayer).getName() + " has won the game.", "Rummikub", JOptionPane.INFORMATION_MESSAGE);
+                    playersInGame.get(currentPlayer).setVictoryCount(1);
+                    generateReport(playersInGame.get(currentPlayer));
+                }
+               
             } else {
-                JOptionPane.showMessageDialog(null, playersInGame.get(currentPlayer) + " has won the game.", "Rummikub", JOptionPane.INFORMATION_MESSAGE);
-            }
- 
-        } else{
-            JOptionPane.showMessageDialog(null, "Non valid movements in the board","Rummikub", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Non valid movements in the board","Rummikub", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_nextPlayerButtonActionPerformed
 
+    public boolean winCheck(){
+        for (Player player : playersInGame){
+            if (player.getTileCounter() == 0){
+                return true;
+            }
+        }
+        return false;
+    }
     private void PassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassButtonActionPerformed
         // TODO add your handling code here:
         
@@ -662,8 +693,8 @@ public class Client extends javax.swing.JFrame {
         }
         cardFileNames.add("src/resources/tiles/BJokerRummy.png");
         cardFileNames.add("src/resources/tiles/RJokerRummy.png");
-        availableTiles.add(new Tile(14, "Black", "src/resources/tiles/BJokerRummy.png"));
-        availableTiles.add(new Tile(14, "Yellow", "src/resources/tiles/RJokerRummy.png"));
+        availableTiles.add(new Tile(14, "Joker", "src/resources/tiles/BJokerRummy.png"));
+        availableTiles.add(new Tile(14, "Joker", "src/resources/tiles/RJokerRummy.png"));
                   
         for (Player player : playersInGame){
                  
@@ -823,19 +854,28 @@ public class Client extends javax.swing.JFrame {
 
                 if ((col > 0 && hasTile[row][col - 1]) && (col < numCols - 1 && hasTile[row][col + 1])) {
                     // Columna - 1 y columna + 1 son verdaderas
-                    if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 1].getColor()) &&
-                            tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 1].getColor())){
+                    if (tilesInBoard[row][col + 1].getColor().equals(tilesInBoard[row][col - 1].getColor()) ||
+                            tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 1].getColor()) ||
+                            tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 1].getColor())){ //Si son del mismo color
                         
                         if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() + 1 &&
-                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1){
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1 ||
+                            tilesInBoard[row][col - 1].getNumber() == 14 && tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1 ||
+                            tilesInBoard[row][col + 1].getNumber() == 14 && tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() + 1 ||
+                            tilesInBoard[row][col].getNumber() == 14 && tilesInBoard[row][col - 1].getNumber() + 1 == tilesInBoard[row][col + 1].getNumber() - 1){
                             continue;
                         } else {
                             return false;
                         }                     
                     }
                     else {
-                        if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 1].getNumber() &&
-                            tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 1].getNumber()){
+                        if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() && //Si son de color diferente
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() ||
+                                tilesInBoard[row][col - 1].getNumber() == 14 && tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() ||
+                                tilesInBoard[row][col].getNumber() == 14 && tilesInBoard[row][col - 1].getNumber() == tilesInBoard[row][col + 1].getNumber() ||
+                                tilesInBoard[row][col + 1].getNumber() == 14 && tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber()){
+                            continue;
+                        } else {
                             return false;
                         }
                     }
@@ -843,76 +883,80 @@ public class Client extends javax.swing.JFrame {
                 } else if ((col > 0 && !hasTile[row][col - 1]) && (col < numCols - 1 && !hasTile[row][col + 1])) {
                     // Columna - 1 y columna + 1 son falsas
                     return false;
-                  
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     
                 } else if (col > 0 && hasTile[row][col - 1] && col < numCols - 2 && !hasTile[row][col + 1]) {
-                    // If left is true and right is false
-                    if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 1].getColor())){
-                        if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() + 1){
-                            if (!hasTile[row][col - 2]) {
+                    //Tiene algo a la izquierda pero no a la derecha
+                    if (!hasTile[row][col - 2]) {
                                 return false;
-                            } else {
-                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 2].getNumber() + 2){
-                                    return false;
-                                }
-                            }
+                            }                  
+                    if (tilesInBoard[row][col].getNumber() == 14){ // row is joker
+                        if (tilesInBoard[row][col - 1].getColor().equals(tilesInBoard[row][col - 2]) &&
+                                tilesInBoard[row][col - 1].getNumber() == tilesInBoard[row][col - 2].getNumber() + 1){
+                            continue;
+                        } else if (tilesInBoard[row][col - 1].getNumber() == tilesInBoard[row][col - 2].getNumber()){
+                            continue;
                         } else {
                             return false;
-                        }
-                    } else {
-                        if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 1].getNumber()){
-                            return false;
-                        } else {
-                            if (!hasTile[row][col - 2]) {
-                                return false;
-                            } else {
-                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col - 2].getNumber()){
-                                    return false;
-                                }
-                            }
                         }
                     }
-                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                } else if (col < numCols - 1 && hasTile[row][col + 1] && col > 1 && !hasTile[row][col - 1]) {
-                    // If left is false and right is true
-                    if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 1].getColor())){
-                        if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1){
-                            if (!hasTile[row][col + 2]) {
-                                return false;
-                            } else {
-                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 2].getNumber() - 2){
-                                    return false;
-                                }
-                            }
+                                                           
+                    else if (tilesInBoard[row][col - 1].getNumber() == 14){ // row -1 is joker
+                        
+                        if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 2].getColor()) &&
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 2].getNumber() + 2){
+                            continue;
+                        } else if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 2].getNumber()){
+                            continue;
                         } else {
                             return false;
                         }
-                    } else {
-                        if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 1].getNumber()){
-                            return false;
+                    } else if (tilesInBoard[row][col-2].getNumber() == 14){ //row-2 is joker
+                        
+                        if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col - 1].getColor()) &&
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber() + 1){
+                            continue;
+                        } else if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col - 1].getNumber()){
+                            continue;
                         } else {
-                            if (!hasTile[row][col + 2]) {
+                            return false;
+                        }
+                    }
+               
+                } else if (col > 0 && hasTile[row][col - 1] && col < numCols - 2 && !hasTile[row][col + 1]) {
+                    //Tiene algo a la derecha pero no a la izquierda
+                    if (!hasTile[row][col + 2]) {
                                 return false;
-                            } else {
-                                if (tilesInBoard[row][col].getNumber() != tilesInBoard[row][col + 2].getNumber()){
-                                    return false;
-                                }
-                            }
+                            }                  
+                    if (tilesInBoard[row][col].getNumber() == 14){ // row is joker
+                        if (tilesInBoard[row][col + 1].getColor().equals(tilesInBoard[row][col + 2]) &&
+                                tilesInBoard[row][col + 1].getNumber() == tilesInBoard[row][col + 2].getNumber() - 1){
+                            continue;
+                        } else if (tilesInBoard[row][col + 1].getNumber() == tilesInBoard[row][col + 2].getNumber()){
+                            continue;
+                        } else {
+                            return false;
+                        }
+                    }
+                                                           
+                    else if (tilesInBoard[row][col + 1].getNumber() == 14){ // row -1 is joker
+                        
+                        if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 2].getColor()) &&
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 2].getNumber() - 2){
+                            continue;
+                        } else if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 2].getNumber()){
+                            continue;
+                        } else {
+                            return false;
+                        }
+                    } else if (tilesInBoard[row][col + 2].getNumber() == 14){ //row-2 is joker
+                        
+                        if (tilesInBoard[row][col].getColor().equals(tilesInBoard[row][col + 1].getColor()) &&
+                            tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber() - 1){
+                            continue;
+                        } else if (tilesInBoard[row][col].getNumber() == tilesInBoard[row][col + 1].getNumber()){
+                            continue;
+                        } else {
+                            return false;
                         }
                     }
                 }
@@ -922,7 +966,7 @@ public class Client extends javax.swing.JFrame {
     }
     // Extra Variables this shit got destroyed
     private int numRows = 6;
-    private int numCols = 14;
+    private int numCols = 16;
     private JButton[][] tiles = new JButton[numRows][numCols];
     private Tile[][] tilesInBoard = new Tile[numRows][numCols];
     private boolean[][] hasTile = new boolean[numRows][numCols];

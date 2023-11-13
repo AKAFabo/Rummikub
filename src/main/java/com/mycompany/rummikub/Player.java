@@ -13,10 +13,18 @@ import java.util.ArrayList;
 public class Player {
     
     private String name;
-    private int points = 0;
     private int playerNumber;
     private int tileCounter = 0;
+    private int victoryCount = 0;
     private ArrayList<String> maze = new ArrayList<>();
+
+    public int getVictoryCount() {
+        return victoryCount;
+    }
+
+    public void setVictoryCount(int victoryCount) {
+        this.victoryCount += victoryCount;
+    }
 
     public int getTileCounter() {
         return tileCounter;
@@ -68,15 +76,7 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
+    }   
 
     public String getTile(int i) {
         return maze.get(i);
