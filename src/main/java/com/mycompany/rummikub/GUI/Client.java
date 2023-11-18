@@ -502,7 +502,7 @@ public class Client extends javax.swing.JFrame {
         
         if (verifyBoard()){
               
-            if  (playersInGame.get(currentPlayer).getTileCounter() != 0){
+            if  (!winCheck()){
                 switch (currentPlayer){
                     case 0 -> Player1Icon.setForeground(Color.black);
                     case 1 -> Player2Icon.setForeground(Color.black);
